@@ -3,12 +3,12 @@ const url = require('url');
 const StringDecoder = require('string_decoder').StringDecoder;
 let recursos = {
   mascotas:
-  [
-    { tipo: "perro", nombre: "Trosky", dueno: "Camilo"},
-    { tipo: "perro", nombre: "Trosky", dueno: "Camilo"},
-    { tipo: "perro", nombre: "Trosky", dueno: "Camilo"},
-    { tipo: "perro", nombre: "Trosky", dueno: "Camilo"}
-  ]
+    [
+      { tipo: "perro", nombre: "Trosky", dueno: "Camilo" },
+      { tipo: "perro", nombre: "Trosky", dueno: "Camilo" },
+      { tipo: "perro", nombre: "Trosky", dueno: "Camilo" },
+      { tipo: "perro", nombre: "Trosky", dueno: "Camilo" }
+    ]
 }
 //Creando el servidor
 const callbackDelServidor = (req, res) => {
@@ -38,25 +38,25 @@ const callbackDelServidor = (req, res) => {
     buffer += decoder.end();
     //3.5 ordenar los data del request
     const data = {
-      ruta:rutaLimpia,
+      ruta: rutaLimpia,
       query,
       metodo,
       headers,
       payload: buffer
     };
-    console.log({data});
+    console.log({ data });
     //3.6 elegir el manejador dependiendo de la ruta y asignarle la funcion que el enrutador tiene
     let handler;
-    if (rutaLimpia && enrutador[rutaLimpia]) {
-      handler = enrutador[rutaLimpia];
+    if (rutaLimpia && enrutador[rutaLimpia] && enrutador[rutaLimpia][metodo]) {
+      handler = enrutador[rutaLimpia][metodo];
     } else {
       handler = enrutador.noEncontrado;
     }
     //4. ejecutar handler (manejador) para enviar la respuesta
     if (typeof handler === 'function') {
-      handler(data, (statusCode = 200, mensaje) =>{
+      handler(data, (statusCode = 200, mensaje) => {
         const respuesta = JSON.stringify(mensaje);
-        res.setHeader("Content-Type","application/json")
+        res.setHeader("Content-Type", "application/json")
         res.writeHead(statusCode);
         //linea donde realmente ya estamos responiendo a la aplicacion cliente
         res.end(respuesta);
@@ -68,8 +68,10 @@ const enrutador = {
   ruta: (data, callback) => {
     callback(200, { mensaje: 'esta es /ruta' });
   },
-  mascotas: (data, callback) => {
-    callback(200, recursos.mascotas);
+  mascotas: {
+    get: (data, callback) => {
+      callback(200, recursos.mascotas);
+    },
   },
   noEncontrado: (data, callback) => {
     callback(404, { mensaje: 'no encontrado' });
