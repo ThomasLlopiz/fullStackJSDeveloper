@@ -36,6 +36,9 @@ const callbackDelServidor = (req, res) => {
   //3.4.2 terminar de acumular datos y desirle al decoder que finalice 
   req.on('end', () => {
     buffer += decoder.end();
+    if (headers["content-type"] === 'application/json') {
+      buffer = JSON.parse(buffer);
+    }
     //3.5 ordenar los data del request
     const data = {
       ruta: rutaLimpia,
@@ -53,7 +56,7 @@ const callbackDelServidor = (req, res) => {
       handler = enrutador.noEncontrado;
     }
     //4. ejecutar handler (manejador) para enviar la respuesta
-    if (typeof handler === 'function') {
+    if (typeof handler === "function") {
       handler(data, (statusCode = 200, mensaje) => {
         const respuesta = JSON.stringify(mensaje);
         res.setHeader("Content-Type", "application/json")
@@ -71,6 +74,10 @@ const enrutador = {
   mascotas: {
     get: (data, callback) => {
       callback(200, recursos.mascotas);
+    },
+    post: (data, callback) => {
+      recursos.mascotas.push(data.payload);
+      callback(201, data.payload);
     },
   },
   noEncontrado: (data, callback) => {
