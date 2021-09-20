@@ -1,7 +1,5 @@
 const http = require("http");
 const requestHandler = require("./requestHandler");
-const recursos = require("./recursos");
-global.recursos = recursos;
 //Guardando el servidor en una peticion http
 const server = http.createServer(requestHandler)
 //Escuchando el servidor
