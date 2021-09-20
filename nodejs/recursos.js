@@ -11,6 +11,11 @@ module.exports = {
         { nombre: "Alexandra", apellido: "Perez", documento: "1234567890" },
         { nombre: "Alexder", apellido: "Gomez", documento: "9999999999" },
         { nombre: "Natalia", apellido: "Vazques", documento: "7777777777" },
-      ]  
-
+      ],
+      duenos:
+      [
+        { nombre: "Alejandra", apellido: "Ramirez", documento: "1234567890" },
+        { nombre: "Alejandro", apellido: "Martienez", documento: "9999999999" },
+        { nombre: "Nicolas", apellido: "Marquez", documento: "7777777777" },
+      ]    
   }
