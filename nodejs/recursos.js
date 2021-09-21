@@ -17,5 +17,16 @@ module.exports = {
         { nombre: "Alejandra", apellido: "Ramirez", documento: "1234567890" },
         { nombre: "Alejandro", apellido: "Martienez", documento: "9999999999" },
         { nombre: "Nicolas", apellido: "Marquez", documento: "7777777777" },
-      ]    
+      ],    
+      consultas:
+      [
+        {
+          mascota: 0,
+          veterinarias: 0,
+          fechaCreacion: new Date(),
+          fechaEdicion: new Date(),
+          historia: "",
+          diagnostico: "",
+        }
+      ]
   }
