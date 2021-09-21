@@ -4,5 +4,5 @@ const requestHandler = require("./requestHandler");
 const server = http.createServer(requestHandler)
 //Escuchando el servidor
 server.listen(6000, () => {
-  console.log("el servidor está escuchando peticiones en http://localhost:6000/");
+  console.log("el servidor está escuchando peticiones en http://localhost:5000/");
 });
