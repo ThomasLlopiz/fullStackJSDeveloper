@@ -6,15 +6,31 @@ module.exports = (req, res) => {
     //1. Obtener url desde el objeto request
     const urlActual = req.url;
     const urlParseada = url.parse(urlActual, true);
+
     //2. Obtener la ruta
     const ruta = urlParseada.pathname;
+
     //3. Quitar slash a la ruta
     const rutaLimpia = ruta.replace(/^\/+|\/+$/g, "");
+
     //3.1 Obtener el método http
     const metodo = req.method.toLowerCase();
+    //3.1.1 Dar permisos de cors escribiendo los headers
+    res.setHeader("Access-Control-Allow-Origin", "*");
+    res.setHeader(
+      "Access-Control-Request-Methods",
+      "OPTIONS,GET,PUT,DELETE,POST"
+    );
+    res.setHeader("Access-Control-Allow-Headers", "*");
+    //3.1.2 dar respuesta inemdiata cuando el metodo sea options
+    if (metodo === 'options') {
+      res.writeHead(200);
+      res.end();
+      return;
+    }
     //3.2 Obtener variables query url
     const { query = {} } = urlParseada;
-    //console.log({ query });
+
     //3.3 Obtener los headers
     const { headers = {} } = req;
     //3.4 obtenr payload, en el caso de haber uno
@@ -35,6 +51,7 @@ module.exports = (req, res) => {
         //separar las rutas
         var [rutaPrincipal, indice] = rutaLimpia.split("/");
       }
+
       //3.5 ordenar los data del request
       const data = {
         indice,
@@ -44,8 +61,8 @@ module.exports = (req, res) => {
         headers,
         payload: buffer
       };
-  
       console.log({ data });
+
       //3.6 elegir el manejador dependiendo de la ruta y asignarle la funcion que el enrutador tiene
       let handler;
       if (
@@ -57,11 +74,13 @@ module.exports = (req, res) => {
       } else {
         handler = enrutador.noEncontrado;
       }
+
       //4. ejecutar handler (manejador) para enviar la respuesta
       if (typeof handler === "function") {
         handler(data, (statusCode = 200, mensaje) => {
           const respuesta = JSON.stringify(mensaje);
-          res.setHeader("Content-Type", "application/json")
+          //mordificar header
+          res.setHeader("Content-Type", "application/json");
           res.writeHead(statusCode);
           //linea donde realmente ya estamos responiendo a la aplicacion cliente
           res.end(respuesta);
