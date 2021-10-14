@@ -1,21 +1,21 @@
-const listaMascotas = document.getElementById('lista-mascotas');
-const tipo = document.getElementById('tipo');
-const nombre = document.getElementById('nombre');
-const dueno = document.getElementById('dueno');
-const indice = document.getElementById('indice');
-const form = document.getElementById('form');
-const exampleModal = document.getElementById('exampleModal');
-const btnGuardar = document.getElementById('btn-guardar');
+const listaMascotas = document.getElementById("lista-mascotas");
+const tipo = document.getElementById("tipo");
+const nombre = document.getElementById("nombre");
+const dueno = document.getElementById("dueno");
+const indice = document.getElementById("indice");
+const form = document.getElementById("form");
+const exampleModal = document.getElementById("exampleModal");
+const btnGuardar = document.getElementById("btn-guardar");
+const url = "http://localhost:5000/mascotas";
 let mascotas = [];
 
 async function listarMascotas() {
     try {
-        const respuesta = await fetch('http://localhost:5000/mascotas');
+        const respuesta = await fetch(url);
         const mascotasDelServer = await respuesta.json();
         if (Array.isArray(mascotasDelServer) && mascotasDelServer.length > 0) {
             mascotas = mascotasDelServer;
         }
-        
         const htmlMascotas = mascotas
             .map((mascota, index) => 
                 `<tr>
@@ -30,41 +30,51 @@ async function listarMascotas() {
                     </div>
                 </td>
                 </tr>`
-                ).join('');
+                ).join("");
                 listaMascotas.innerHTML = htmlMascotas;
-                Array.from(document.getElementsByClassName('editar')).forEach((bontonEditar, index) => bontonEditar.onclick = editar(index));
-                Array.from(document.getElementsByClassName('eliminar')).forEach((bontonEliminar, index) => bontonEliminar.onclick = eliminar(index)
+                Array.from(document.getElementsByClassName("editar")).forEach((bontonEditar, index) => bontonEditar.onclick = editar(index));
+                Array.from(document.getElementsByClassName("eliminar")).forEach((bontonEliminar, index) => bontonEliminar.onclick = eliminar(index)
             );
     } catch (error) {
         throw error;
     }
 }
 
-function enviarDatos(e) {
+async function enviarDatos(e) {
     e.preventDefault();
-    const datos = {
-        tipo: tipo.value,
-        nombre: nombre.value,
-        dueno: dueno.value
-    };
-    const accion = btnGuardar.innerHTML;
-    switch (accion) {
-        case 'Editar':
+    try {
+        const datos = {
+            tipo: tipo.value,
+            nombre: nombre.value,
+            dueno: dueno.value
+        };
+        let method = "POST";
+        let urlEnvio = url;
+        const accion = btnGuardar.innerHTML;
+        if(accion === "Editar") {
+            method = "PUT";
             mascotas[indice.value] = datos;
-            break;
-
-        default:
-            //Crear
-            mascotas.push(datos);
-            break;
+            urlEnvio = `${url}/${indice.value}`;
+        }
+        const respuesta = await fetch(urlEnvio, { 
+            method, 
+            headers: {
+                "Content-Type": "application/json",
+            },
+            body: JSON.stringify(datos),
+        })
+        if (respuesta.ok) {
+            listarMascotas();
+            resetModal();
+        }
+    } catch (error) {
+        throw error;
     }
-    listarMascotas();
-    resetModal();
 }
 
 function editar(index) {
     return function cuandoHagoClick() {
-        btnGuardar.innerHTML = 'Editar'
+        btnGuardar.innerHTML = "Editar"
         const mascota = mascotas[index];
         tipo.value = mascota.tipo;
         nombre.value = mascota.nombre;
@@ -74,11 +84,11 @@ function editar(index) {
 }
 
 function resetModal() {
-    tipo.value = '';
-    nombre.value = '';
-    dueno.value = '';
-    indice.value = '';
-    btnGuardar.innerHTML = 'Crear'
+    tipo.value = "";
+    nombre.value = "";
+    dueno.value = "";
+    indice.value = "";
+    btnGuardar.innerHTML = "Crear"
 }
 
 function eliminar(index) {
