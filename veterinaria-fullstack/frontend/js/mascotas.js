@@ -13,12 +13,13 @@ async function listarMascotas() {
     try {
         const respuesta = await fetch(url);
         const mascotasDelServer = await respuesta.json();
-        if (Array.isArray(mascotasDelServer) && mascotasDelServer.length > 0) {
+        if (Array.isArray(mascotasDelServer)) {
             mascotas = mascotasDelServer;
         }
-        const htmlMascotas = mascotas
-            .map((mascota, index) => 
-                `<tr>
+        if (mascotas.length > 0) {
+            const htmlMascotas = mascotas
+                .map((mascota, index) => `
+                <tr>
                 <th scope="row">${index}</th>
                 <td>${mascota.tipo}</td>
                 <td>${mascota.nombre}</td>
@@ -29,12 +30,17 @@ async function listarMascotas() {
                         <button type="button" class="btn btn-danger eliminar"><i class="far fa-trash-alt"></i></button>
                     </div>
                 </td>
-                </tr>`
-                ).join("");
-                listaMascotas.innerHTML = htmlMascotas;
-                Array.from(document.getElementsByClassName("editar")).forEach((bontonEditar, index) => bontonEditar.onclick = editar(index));
-                Array.from(document.getElementsByClassName("eliminar")).forEach((bontonEliminar, index) => bontonEliminar.onclick = eliminar(index)
+                </tr>
+                `).join("");
+            listaMascotas.innerHTML = htmlMascotas;
+            Array.from(document.getElementsByClassName("editar")).forEach((bontonEditar, index) => bontonEditar.onclick = editar(index));
+            Array.from(document.getElementsByClassName("eliminar")).forEach((bontonEliminar, index) => bontonEliminar.onclick = eliminar(index)
             );
+            return;
+        }
+        listaMascotas.innerHTML =`<tr>
+                                    <td colspan="5">No hay mascotas</td>
+                                </tr>`;
     } catch (error) {
         throw error;
     }
@@ -51,13 +57,13 @@ async function enviarDatos(e) {
         let method = "POST";
         let urlEnvio = url;
         const accion = btnGuardar.innerHTML;
-        if(accion === "Editar") {
+        if (accion === "Editar") {
             method = "PUT";
             mascotas[indice.value] = datos;
             urlEnvio = `${url}/${indice.value}`;
         }
-        const respuesta = await fetch(urlEnvio, { 
-            method, 
+        const respuesta = await fetch(urlEnvio, {
+            method,
             headers: {
                 "Content-Type": "application/json",
             },
@@ -92,14 +98,24 @@ function resetModal() {
 }
 
 function eliminar(index) {
-    return function clickEnEliminar() {
-        console.log(index);
-        mascotas = mascotas.filter((mascota, indiceMascota) => indiceMascota !== index);
-        listarMascotas();
+    try {
+        const urlEnvio = `${url}/${index}`;
+        return async function clickEnEliminar() {
+
+            const respuesta = await fetch(urlEnvio, {
+                method: "DELETE"
+            });
+            if (respuesta.ok) {
+                listarMascotas();
+                resetModal();
+            }
+            listarMascotas();
+        }
+    } catch (error) {
+        throw error;
     }
-}
+};
 
 listarMascotas();
-
 form.onsubmit = enviarDatos;
 btnGuardar.onclick = enviarDatos;
