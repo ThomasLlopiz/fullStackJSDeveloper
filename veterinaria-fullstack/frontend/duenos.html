@@ -11,7 +11,7 @@
         integrity="sha384-KyZXEAg3QhqLMpG8r+8fhAXLRk2vvoC2f3B09zVXn8CA5QIVfZOJ3BCsw2P0p/We" crossorigin="anonymous">
     <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.13.0/css/all.css" />
     <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.13.0/css/v4-shims.css" />
-    <link href="/veterinaria/css/styles.css" rel="stylesheet" />
+    <link href="./css/styles.css" rel="stylesheet" />
     <title>Veterinaria</title>
 </head>
 
@@ -52,10 +52,14 @@
 
         <!-- Inicio Button trigger modal -->
         <h1>Dueños de Mascotas</h1>
-        <div class="actions-menu">
+        <div class="actions-menu-content">
             <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#exampleModal">
                 Nuevo
             </button>
+            <div class="alert alert-danger alert-dismissible" role="alert" id="alert">
+                <strong>Oops!</strong> Algo hicimos mal, por favor vuelve a intentarlo!
+                <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+            </div>
         </div>
         <!-- Fin button modal -->
 
@@ -65,7 +69,6 @@
                 <tr>
                     <th scope="col">#</th>
                     <th scope="col">Identificacion</th>
-                    <th scope="col">País</th>
                     <th scope="col">Nombre</th>
                     <th scope="col">Apellido</th>
                     <th scope="col"></th>
@@ -92,23 +95,17 @@
                         <input type="hidden" id="indice">
                         <div class="row">
                             <div class="col">
-                                <select id="pais" class="form-select" aria-label="Default select example">
-                                    <option>Pais</option>
-                                    <option>Ecuador</option>
-                                    <option>Bolivia</option>
-                                    <option>Venezuela</option>
-                                    <option>Argentina</option>
-                                </select>
-                            </div>
-                            <div class="col">
-                                <input id="identificacion" type="text" name="identificacion" class="form-control"
-                                    placeholder="Identificacion">
+                                <input id="documento" type="text" name="documento" class="form-control"
+                                    placeholder="documento">
                             </div>
                         </div>
                         <div class="row">
+
                             <div class="col">
                                 <input id="nombre" type="text" name="nombre" class="form-control" placeholder="Nombre">
                             </div>
+                        </div>
+                        <div class="row">
                             <div class="col">
                                 <input id="apellido" type="text" name="apellido" class="form-control"
                                     placeholder="Apellido">
@@ -140,7 +137,8 @@
         </script>
     <script defer src="https://use.fontawesome.com/releases/v5.13.0/js/all.js"></script>
     <script defer src="https://use.fontawesome.com/releases/v5.13.0/js/v4-shims.js"></script>
-    <script src="/veterinaria-fullstack/frontend/js/duenos.js"></script>
+    <script src="https://code.jquery.com/jquery-3.3.1.js"></script>    
+    <script src="./js/duenos.js"></script>
 </body>
 
 </html>
