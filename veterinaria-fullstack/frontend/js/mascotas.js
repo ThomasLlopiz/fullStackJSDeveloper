@@ -77,7 +77,7 @@ async function enviarDatos(e) {
         }
     } catch (error) {
         console.log({ error });
-        $(".alert").show();
+        $(alert).show();
     }
 }
 
@@ -116,7 +116,7 @@ function eliminar(index) {
         }
     } catch (error) {
         console.log({ error });
-        $(".alert").show();
+        $(alert).show();
     }
 };
 
