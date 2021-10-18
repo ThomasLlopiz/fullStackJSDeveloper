@@ -47,26 +47,37 @@ async function listarDuenos() {
 
 }
 
-function enviarDatos(e) {
+async function enviarDatos(e) {
     e.preventDefault();
-    const datos = {
-        documento: documento.value,
-        nombre: nombre.value,
-        apellido: apellido.value,
-    };
-    const accion = btnGuardar.innerHTML;
-    switch (accion) {
-        case 'Editar':
-            duenos[indice.value] = datos;
-        break;
-
-        default:
-        //Crear
-            duenos.push(datos);
-        break;
+    try {
+        const datos = {
+            apellido: apellido.value,
+            nombre: nombre.value,
+            documento: documento.value
+        };
+        const accion = btnGuardar.innerHTML;
+        let urlEnvio = url;
+        let method = "POST";
+        if (accion === "Editar") {
+            method = "PUT";
+            urlEnvio += `/${indice.value}`;
+        }
+        const respuesta = await fetch(urlEnvio, {
+            method,
+            headers: {
+                "Content-Type": "application/json",
+            },
+            body: JSON.stringify(datos),
+            mode: "cors",
+        });
+        if (respuesta.ok) {
+            listarDuenos();
+            resetModal();
+        }
+    } catch (error) {
+        console.log({ error });
+        $(alert).show();
     }
-    listarDuenos();
-    resetModal();
 }
 
 function editar(index){
