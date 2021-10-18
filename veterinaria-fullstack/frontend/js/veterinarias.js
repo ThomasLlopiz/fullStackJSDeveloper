@@ -2,7 +2,7 @@ const listaVeterinarias = document.getElementById('lista-veterinarias');
 const pais = document.getElementById('pais');
 const nombre = document.getElementById('nombre');
 const apellido = document.getElementById('apellido');
-const identificacion = document.getElementById('identificacion');
+const documento = document.getElementById('documento');
 const indice = document.getElementById('indice');
 const form = document.getElementById('form');
 const exampleModal = document.getElementById('exampleModal');
@@ -52,7 +52,7 @@ async function listarVeterinarias() {
         e.preventDefault();
         const datos = {
             pais: pais.value,
-            identificacion: identificacion.value,
+            documento: documento.value,
             nombre: nombre.value,
             apellido: apellido.value,
         };
@@ -76,7 +76,7 @@ async function listarVeterinarias() {
             btnGuardar.innerHTML = 'Editar'
             const veterinaria = veterinarias[index];
             pais.value = veterinaria.pais;
-            identificacion.value = veterinaria.identificacion;
+            documento.value = veterinaria.documento;
             nombre.value = veterinaria.nombre;
             apellido.value = veterinaria.apellido;
             indice.value = index;
@@ -86,7 +86,7 @@ async function listarVeterinarias() {
     function resetModal() {
         indice.value = '';
         pais.value = '';
-        identificacion.value = '';
+        documento.value = '';
         nombre.value = '';
         apellido.value = '';
         btnGuardar.innerHTML = 'Crear'
