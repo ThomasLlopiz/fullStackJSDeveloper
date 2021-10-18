@@ -29,10 +29,12 @@
                 <div class="collapse navbar-collapse" id="navbarColor01">
                     <ul class="navbar-nav me-auto mb-2 mb-lg-0">
                         <li class="nav-item">
-                            <a class="nav-link active" aria-current="page" href="/veterinaria-fullstack/frontend/index.html">Mascotas</a>
+                            <a class="nav-link active" aria-current="page"
+                                href="/veterinaria-fullstack/frontend/index.html">Mascotas</a>
                         </li>
                         <li class="nav-item">
-                            <a class="nav-link" href="/veterinaria-fullstack/frontend/veterinarias.html">Veterinari@s</a>
+                            <a class="nav-link"
+                                href="/veterinaria-fullstack/frontend/veterinarias.html">Veterinari@s</a>
                         </li>
                         <li class="nav-item">
                             <a class="nav-link" href="/veterinaria-fullstack/frontend/consultas.html">Consultas</a>
@@ -53,9 +55,15 @@
         <!-- Inicio Button trigger modal -->
         <h1>Mascotas</h1>
         <div class="actions-menu">
-            <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#exampleModal">
-                Nuevo
-            </button>
+            <div class="actions-menu-content">
+                <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#exampleModal">
+                    Nuevo
+                </button>
+                <div class="alert alert-danger alert-dismissible" role="alert" id="alert">
+                    <strong>Oops!</strong> Algo hicimos mal, por favor vuelve a intentarlo!
+                    <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                </div>
+            </div>
         </div>
         <!-- Fin button modal -->
 
@@ -71,7 +79,7 @@
                 </tr>
             </thead>
             <tbody id="lista-mascotas">
-              
+
             </tbody>
         </table>
         <!-- FIN TABLA -->
@@ -119,7 +127,8 @@
                 </div>
                 <div class="modal-footer">
                     <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cerrar</button>
-                    <button type="button" id="btn-guardar" class="btn btn-primary" data-bs-dismiss="modal">Crear</button>
+                    <button type="button" id="btn-guardar" class="btn btn-primary"
+                        data-bs-dismiss="modal">Crear</button>
                 </div>
             </div>
         </div>
@@ -140,6 +149,7 @@
         </script>
     <script defer src="https://use.fontawesome.com/releases/v5.13.0/js/all.js"></script>
     <script defer src="https://use.fontawesome.com/releases/v5.13.0/js/v4-shims.js"></script>
+    <script src="https://code.jquery.com/jquery-3.3.1.js"></script>
     <script src="/veterinaria-fullstack/frontend/js/mascotas.js"></script>
 </body>
 
