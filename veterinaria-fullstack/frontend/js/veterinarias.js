@@ -39,7 +39,7 @@ async function listarVeterinarias() {
             return;
         }
         listaVeterinarias.innerHTML = `<tr>
-                                        <td colspan="5">No hay mascotas</td>
+                                        <td colspan="5">No hay veterinarias</td>
                                       </tr>`;
     } catch (error) {
         console.log({ error });
