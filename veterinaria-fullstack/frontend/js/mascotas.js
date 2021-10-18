@@ -104,7 +104,6 @@ function eliminar(index) {
     try {
         const urlEnvio = `${url}/${index}`;
         return async function clickEnEliminar() {
-
             const respuesta = await fetch(urlEnvio, {
                 method: "DELETE"
             });
