@@ -1,53 +1,56 @@
 const listaDuenos = document.getElementById('lista-duenos');
-const pais = document.getElementById('pais');
 const nombre = document.getElementById('nombre');
 const apellido = document.getElementById('apellido');
-const identificacion = document.getElementById('identificacion');
+const documento = document.getElementById('documento');
 const indice = document.getElementById('indice');
 const form = document.getElementById('form');
 const exampleModal = document.getElementById('exampleModal');
 const btnGuardar = document.getElementById('btn-guardar');
-let duenos = [
-    {
-        pais: "Ecuador",
-        identificacion: "123456789",        
-        nombre: "Esteban",
-        apellido: "Alberto",               
-    },
-    {
-        pais: "Argentina",
-        identificacion: "123456789",
-        nombre: "Thomas",
-        apellido: "Llopiz",
-    },
-]
+const alert = document.getElementById("alert");
+const url = "http://localhost:5000/duenos";
+let duenos = []
 
-function listarDuenos() {
-    const htmlDuenos = duenos.map((dueno,index) => `
-    <tr>
-    <th scope="row">${index}</th>
-    <td>${dueno.identificacion}</td>
-    <td>${dueno.pais}</td>
-    <td>${dueno.nombre}</td>
-    <td>${dueno.apellido}</td>
-    <td>
-        <div class="btn-group" role="group" aria-label="Basic example">
-            <button type="button" class="btn btn-info editar" data-bs-toggle="modal" data-bs-target="#exampleModal"><i class="fas fa-edit"></i></button>
-            <button type="button" class="btn btn-danger eliminar"><i class="far fa-trash-alt"></i></button>
-        </div>
-    </td>
-    </tr>
-    `).join('');
-    listaDuenos.innerHTML = htmlDuenos;
-    Array.from(document.getElementsByClassName('editar')).forEach((bontonEditar,index)=>bontonEditar.onclick = editar(index));
-    Array.from(document.getElementsByClassName('eliminar')).forEach((bontonEliminar,index)=>bontonEliminar.onclick = eliminar(index));
+async function listarDuenos() {
+    try {
+        const respuesta = await fetch(url);
+        const duenosDelServer = await respuesta.json();
+        if (Array.isArray(duenosDelServer)) {
+            duenos = duenosDelServer;
+        }
+        if (duenos.length > 0) {
+            const htmlDuenos = duenos.map((dueno,index) => `
+            <tr>
+            <th scope="row">${index}</th>
+            <td>${dueno.nombre}</td>
+            <td>${dueno.apellido}</td>
+            <td>${dueno.documento}</td>
+            <td>
+                <div class="btn-group" role="group" aria-label="Basic example">
+                    <button type="button" class="btn btn-info editar" data-bs-toggle="modal" data-bs-target="#exampleModal"><i class="fas fa-edit"></i></button>
+                    <button type="button" class="btn btn-danger eliminar"><i class="far fa-trash-alt"></i></button>
+                </div>
+            </td>
+            </tr>
+            `).join('');
+            listaDuenos.innerHTML = htmlDuenos;
+            Array.from(document.getElementsByClassName('editar')).forEach((bontonEditar,index)=>bontonEditar.onclick = editar(index));
+            Array.from(document.getElementsByClassName('eliminar')).forEach((bontonEliminar,index)=>bontonEliminar.onclick = eliminar(index));
+            return;
+        }
+        listaDuenos.innerHTML = `<tr>
+                                    <td colspan="5">No hay dueñ@s</td>
+                                </tr>`;
+    } catch (error) {
+        console.log({ error });
+        $(alert).show();
+    }
+
 }
 
 function enviarDatos(e) {
     e.preventDefault();
     const datos = {
-        pais: pais.value,
-        identificacion: identificacion.value,
+        documento: documento.value,
         nombre: nombre.value,
         apellido: apellido.value,
     };
@@ -70,8 +73,7 @@ function editar(index){
     return function cuandoHagoClick(){
         btnGuardar.innerHTML = 'Editar'
         const dueno = duenos[index];
-        pais.value = dueno.pais;
-        identificacion.value = dueno.identificacion;
+        documento.value = dueno.documento;
         nombre.value = dueno.nombre;
         apellido.value = dueno.apellido;
         indice.value = index;
@@ -80,8 +82,7 @@ function editar(index){
 
 function resetModal(){
     indice.value = '';
-    pais.value = '';
-    identificacion.value = '';
+    documento.value = '';
     nombre.value = '';
     apellido.value = '';
     btnGuardar.innerHTML = 'Crear'
@@ -90,7 +91,7 @@ function resetModal(){
 function eliminar (index){
     return  function clickEnEliminar () {
         console.log(index);
-        duenos = duenos.filter((veterinaria,indiceDuenos)=>indiceDuenos !== index);
+        duenos = duenos.filter((dueno,indiceDuenos)=>indiceDuenos !== index);
         listarDuenos();
     }
 }
