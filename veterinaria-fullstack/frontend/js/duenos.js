@@ -99,14 +99,24 @@ function resetModal(){
     btnGuardar.innerHTML = 'Crear'
 }
 
-function eliminar (index){
-    return  function clickEnEliminar () {
-        console.log(index);
-        duenos = duenos.filter((dueno,indiceDuenos)=>indiceDuenos !== index);
-        listarDuenos();
+function eliminar(index) {
+    const urlEnvio = `${url}/${index}`;
+    return async function clicklEnEliminar() {
+        try {
+            const respuesta = await fetch(urlEnvio, {
+                method: "DELETE",
+                mode: "cors",
+            });
+            if (respuesta.ok) {
+                listarDuenos();
+            }
+        }
+        catch (error) {
+            console.log({ error });
+            $(alert).show();
+        }
     }
 }
-
 listarDuenos();
 
 form.onsubmit = enviarDatos;
