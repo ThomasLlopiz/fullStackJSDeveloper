@@ -1,24 +1,20 @@
 const listaConsultas = document.getElementById('lista-consultas');
-const email = document.getElementById('email');
-const nombre = document.getElementById('nombre');
-const apellido = document.getElementById('apellido');
-const indice = document.getElementById('indice');
-const form = document.getElementById('form');
-const exampleModal = document.getElementById('exampleModal');
-const btnGuardar = document.getElementById('btn-guardar');
-const url = "http://localhost:5000/consultas";
+const mascota = document.getElementById('mascota');
+const url = "http://localhost:5000";
 let consultas = [];
+let mascotas = [];
 
 async function listarConsultas() {
+    const entidad = "consultas"
     try {
-        const respuesta = await fetch(url);
+        const respuesta = await fetch(`${url}/${entidad}`);
         const consultasDelServidor = await respuesta.json();
         if (Array.isArray(consultasDelServidor)) {
             consultas = consultasDelServidor;
         }
         if (respuesta.ok) {
-            const htmlConsultas = consultas.map(
-                (consulta, indice) =>
+            const htmlConsultas = consultas
+            .map((consulta, indice) =>
             `<tr>
                 <th scope="row">${indice}</th>
                 <td>${consulta.mascota.nombre}</td>
@@ -42,3 +38,26 @@ async function listarConsultas() {
 
 listarConsultas();
 
+async function listarMascotas() {
+    const entidad = "mascotas"
+    try {
+        const respuesta = await fetch(`${url}/${entidad}`);
+        const mascotasDelServidor = await respuesta.json();
+        if (Array.isArray(mascotasDelServidor)) {
+            mascotas = mascotasDelServidor;
+        }
+        if (respuesta.ok) {
+            const htmlMascotas = mascotas
+            .forEach((_mascota, indice) => {
+            const optionActual = document.createElement("option");
+            optionActual.innerHTML = _mascota.nombre;
+            optionActual.value = indice;
+            mascota.appendChild(optionActual);
+            });
+        }
+    } catch (error) {
+        throw error;
+    }
+}
+
+listarMascotas();
