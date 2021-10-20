@@ -1,14 +1,14 @@
-const listaVeterinarias = document.getElementById('lista-veterinarias');
-const nombre = document.getElementById('nombre');
-const apellido = document.getElementById('apellido');
-const documento = document.getElementById('documento');
-const indice = document.getElementById('indice');
-const form = document.getElementById('form');
-const exampleModal = document.getElementById('exampleModal');
-const btnGuardar = document.getElementById('btn-guardar');
+const listaVeterinarias = document.getElementById("lista-veterinarias");
+const nombre = document.getElementById("nombre");
+const apellido = document.getElementById("apellido");
+const documento = document.getElementById("documento");
+const indice = document.getElementById("indice");
+const form = document.getElementById("form");
+const exampleModal = document.getElementById("exampleModal");
+const btnGuardar = document.getElementById("btn-guardar");
 const alert = document.getElementById("alert");
 const url = "http://localhost:5000/veterinarias";
-let veterinarias = []
+let veterinarias = [];
 
 async function listarVeterinarias() {
     try {
@@ -32,10 +32,10 @@ async function listarVeterinarias() {
                 </div>
             </td>
             </tr>
-            `).join('');
+            `).join("");
             listaVeterinarias.innerHTML = htmlVeterinarias;
-            Array.from(document.getElementsByClassName('editar')).forEach((bontonEditar, index) => bontonEditar.onclick = editar(index));
-            Array.from(document.getElementsByClassName('eliminar')).forEach((bontonEliminar, index) => bontonEliminar.onclick = eliminar(index));
+            Array.from(document.getElementsByClassName("editar")).forEach((bontonEditar, index) => bontonEditar.onclick = editar(index));
+            Array.from(document.getElementsByClassName("eliminar")).forEach((bontonEliminar, index) => bontonEliminar.onclick = eliminar(index));
             return;
         }
         listaVeterinarias.innerHTML = `<tr>
@@ -55,9 +55,9 @@ async function enviarDatos(e) {
             nombre: nombre.value,
             documento: documento.value
         };
-        const accion = btnGuardar.innerHTML;
-        let urlEnvio = url;
         let method = "POST";
+        let urlEnvio = url;
+        const accion = btnGuardar.innerHTML;
         if (accion === "Editar") {
             method = "PUT";
             urlEnvio += `/${indice.value}`;
@@ -68,7 +68,6 @@ async function enviarDatos(e) {
                 "Content-Type": "application/json",
             },
             body: JSON.stringify(datos),
-            mode: "cors",
         });
         if (respuesta.ok) {
             listarVeterinarias();
@@ -82,7 +81,7 @@ async function enviarDatos(e) {
 
 function editar(index) {
     return function cuandoHagoClick() {
-        btnGuardar.innerHTML = 'Editar'
+        btnGuardar.innerHTML = "Editar"
         const veterinaria = veterinarias[index];
         documento.value = veterinaria.documento;
         nombre.value = veterinaria.nombre;
@@ -92,33 +91,33 @@ function editar(index) {
 }
 
 function resetModal() {
-    indice.value = '';
-    documento.value = '';
-    nombre.value = '';
-    apellido.value = '';
-    btnGuardar.innerHTML = 'Crear'
+    documento.value = "";
+    nombre.value = "";
+    apellido.value = "";
+    indice.value = "";
+    btnGuardar.innerHTML = "Crear"
 }
 
 function eliminar(index) {
-    const urlEnvio = `${url}/${index}`;
-    return async function clicklEnEliminar() {
-        try {
+    try {
+        const urlEnvio = `${url}/${index}`;
+        return async function clicklEnEliminar() {
             const respuesta = await fetch(urlEnvio, {
                 method: "DELETE",
-                mode: "cors",
             });
             if (respuesta.ok) {
                 listarVeterinarias();
+                resetModal();
             }
-        }
-        catch (error) {
-            console.log({ error });
-            $(".alert").show();
+            listarVeterinarias();
         }
     }
-}
+    catch (error) {
+        console.log({ error });
+        $(alert).show();
+    }
+};
 
 listarVeterinarias();
-
 form.onsubmit = enviarDatos;
 btnGuardar.onclick = enviarDatos;
