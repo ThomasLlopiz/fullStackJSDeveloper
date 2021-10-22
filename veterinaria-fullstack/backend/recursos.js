@@ -25,7 +25,7 @@ module.exports = {
           veterinaria: 0,
           fechaCreacion: new Date(),
           fechaEdicion: new Date(),
-          historia: "",
+          historia: "Historia",
           diagnostico: "Diagnostico",
         }
       ]
