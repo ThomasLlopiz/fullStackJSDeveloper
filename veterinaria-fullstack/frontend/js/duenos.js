@@ -117,7 +117,7 @@ function eliminar(index) {
         }
     }
 }
-listarDuenos();
 
+listarDuenos();
 form.onsubmit = enviarDatos;
 btnGuardar.onclick = enviarDatos;
