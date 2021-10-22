@@ -40,7 +40,8 @@ async function listarConsultas() {
             Array.from(document.getElementsByClassName("editar")).forEach((bontonEditar, index) => bontonEditar.onclick = editar(index));
         }
     } catch (error) {
-        throw error;
+        console.log({ error });
+        $(alert).show();
     }
 }
 
@@ -62,7 +63,8 @@ async function listarMascotas() {
                 });
         }
     } catch (error) {
-        throw error;
+        console.log({ error });
+        $(alert).show();
     }
 }
 
@@ -84,7 +86,8 @@ async function listarVeterinarias() {
                 });
         }
     } catch (error) {
-        throw error;
+        console.log({ error });
+        $(alert).show();
     }
 }
 
@@ -135,7 +138,7 @@ async function enviarDatos(e) {
         }
     } catch (error) {
         console.log({ error });
-        // $(alert).show();
+        $(alert).show();
     }
 }
 
