@@ -52,10 +52,14 @@
 
         <!-- Inicio Button trigger modal -->
         <h1>Consultas</h1>
-        <div class="actions-menu">
+        <div class="actions-menu-content">
             <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#exampleModal">
                 Nuevo
             </button>
+            <div class="alert alert-danger alert-dismissible" role="alert" id="alert">
+                <strong>Oops!</strong> Algo hicimos mal, por favor vuelve a intentarlo!
+                <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+            </div>
         </div>
         <!-- Fin button modal -->
 
@@ -66,13 +70,14 @@
                     <th scope="col">#</th>
                     <th scope="col">Mascota</th>
                     <th scope="col">Veterinari@</th>
+                    <th scope="col">Historia</th>
                     <th scope="col">Diagnostico</th>
                     <th scope="col">Creado</th>
                     <th scope="col">Editado</th>
+                    <th scope="col"></th>
                 </tr>
             </thead>
             <tbody id="lista-consultas">
-
             </tbody>
         </table>
         <!-- FIN TABLA -->
@@ -106,7 +111,7 @@
                         </div>
                         <div class="row">
                             <div class="col">
-                                <textarea class="form-control" placeholder="Historia"></textarea>
+                                <textarea class="form-control" placeholder="Historia" id="historia"></textarea>
                             </div>
                         </div>
                         <div class="row">
@@ -124,8 +129,7 @@
                 </div>
                 <div class="modal-footer">
                     <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cerrar</button>
-                    <button type="button" id="btn-guardar" class="btn btn-primary"
-                        data-bs-dismiss="modal">Crear</button>
+                    <button type="button" class="btn btn-primary" data-bs-dismiss="modal" id="btn-guardar" >Crear</button>
                 </div>
             </div>
         </div>
