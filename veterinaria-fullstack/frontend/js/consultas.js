@@ -101,7 +101,6 @@ function editar(index) {
         historia.value = consulta.historia;
         diagnostico.value = consulta.diagnostico;
     };
-    resetModal();
 }
 
 async function enviarDatos(e) {
@@ -114,7 +113,7 @@ async function enviarDatos(e) {
             historia: historia.value,
             diagnostico: diagnostico.value,
         };
-        if (validar(datos === true)) {
+        if (validar(datos) === true) {
             const accion = btnGuardar.innerHTML;
             let urlEnvio = `${url}/${entidad}`;
             let method = "POST";
@@ -136,6 +135,7 @@ async function enviarDatos(e) {
             }
             return;
         }
+        $(alert).show();
     } catch (error) {
         console.log({ error });
         $(alert).show();
@@ -147,16 +147,16 @@ function resetModal() {
     btnGuardar.innerHTML = "Crear"
     mascota.value = "Seleccione Mascota";
     veterinaria.value = "Seleccione Veterinari@";
-    historia.value = "Historia";
+    historia.value = "";
     diagnostico.value = "Diagnostico";
 }
 
 function validar(datos) {
-    if (typeof datos === 'objet') return false;
+    if (typeof datos !== "object") return false;
     for (let llave in datos) {
         if (datos[llave].length === 0) return false;
     }
-    return;
+    return true;
 }
 btnGuardar.onclick = enviarDatos;
 listarConsultas();
