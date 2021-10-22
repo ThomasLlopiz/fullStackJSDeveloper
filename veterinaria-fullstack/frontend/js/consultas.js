@@ -1,6 +1,11 @@
-const listaConsultas = document.getElementById('lista-consultas');
-const mascota = document.getElementById('mascota');
-const veterinaria = document.getElementById('veterinaria');
+const listaConsultas = document.getElementById("lista-consultas");
+const mascota = document.getElementById("mascota");
+const veterinaria = document.getElementById("veterinaria");
+const btnGuardar = document.getElementById("btn-guardar");
+const indice = document.getElementById("indice");
+const historia = document.getElementById("historia");
+const diagnostico = document.getElementById("diagnostico");
+const alert = document.getElementById("alert");
 const url = "http://localhost:5000";
 let consultas = [];
 let mascotas = [];
@@ -16,15 +21,15 @@ async function listarConsultas() {
         }
         if (respuesta.ok) {
             const htmlConsultas = consultas
-            .map((consulta, indice) =>
-            `<tr>
+                .map((consulta, indice) =>
+                    `<tr>
                 <th scope="row">${indice}</th>
                 <td>${consulta.mascota.nombre}</td>
                 <td>${consulta.veterinaria.nombre} ${consulta.veterinaria.apellido}</td>
+                <td>${consulta.historia}</td>
                 <td>${consulta.diagnostico}</td>
                 <td>${consulta.fechaCreacion}</td>
                 <td>${consulta.fechaEdicion}</td>
-                <td>${consulta.historia}</td>
                 <td>
                     <div class="btn-group" role="group" aria-label="Basic example">
                         <button type="button" class="btn btn-info editar" data-bs-toggle="modal" data-bs-target="#exampleModal"><i class="fas fa-edit"></i></button>
@@ -32,13 +37,12 @@ async function listarConsultas() {
                 </td>
             </tr>`).join("");
             listaConsultas.innerHTML = htmlConsultas;
+            Array.from(document.getElementsByClassName("editar")).forEach((bontonEditar, index) => bontonEditar.onclick = editar(index));
         }
     } catch (error) {
         throw error;
     }
 }
-
-listarConsultas();
 
 async function listarMascotas() {
     const entidad = "mascotas"
@@ -50,19 +54,17 @@ async function listarMascotas() {
         }
         if (respuesta.ok) {
             const htmlMascotas = mascotas
-            .forEach((_mascota, indice) => {
-            const optionActual = document.createElement("option");
-            optionActual.innerHTML = _mascota.nombre;
-            optionActual.value = indice;
-            mascota.appendChild(optionActual);
-            });
+                .forEach((_mascota, indice) => {
+                    const optionActual = document.createElement("option");
+                    optionActual.innerHTML = _mascota.nombre;
+                    optionActual.value = indice;
+                    mascota.appendChild(optionActual);
+                });
         }
     } catch (error) {
         throw error;
     }
 }
-
-listarMascotas();
 
 async function listarVeterinarias() {
     const entidad = "veterinarias"
@@ -74,16 +76,86 @@ async function listarVeterinarias() {
         }
         if (respuesta.ok) {
             const htmlVeterinarias = veterinarias
-            .forEach((_veterinaria, indice) => {
-            const optionActual = document.createElement("option");
-            optionActual.innerHTML = `${_veterinaria.nombre} ${_veterinaria.apellido}`;
-            optionActual.value = indice;
-            veterinaria.appendChild(optionActual);
-            });
+                .forEach((_veterinaria, indice) => {
+                    const optionActual = document.createElement("option");
+                    optionActual.innerHTML = `${_veterinaria.nombre} ${_veterinaria.apellido}`;
+                    optionActual.value = indice;
+                    veterinaria.appendChild(optionActual);
+                });
         }
     } catch (error) {
         throw error;
     }
 }
 
+function editar(index) {
+    return function cuandoHagoClick() {
+        btnGuardar.innerHTML = "Editar"
+        const consulta = consultas[index];
+        indice.value = index;
+        mascota.value = consulta.mascota.id;
+        veterinaria.value = consulta.veterinaria.id;
+        historia.value = consulta.historia;
+        diagnostico.value = consulta.diagnostico;
+    };
+    resetModal();
+}
+
+async function enviarDatos(e) {
+    const entidad = "consultas";
+    e.preventDefault();
+    try {
+        const datos = {
+            mascota: mascota.value,
+            veterinaria: veterinaria.value,
+            historia: historia.value,
+            diagnostico: diagnostico.value,
+        };
+        if (validar(datos === true)) {
+            const accion = btnGuardar.innerHTML;
+            let urlEnvio = `${url}/${entidad}`;
+            let method = "POST";
+            if (accion === "Editar") {
+                method = "PUT";
+                urlEnvio += `/${indice.value}`;
+            }
+            const respuesta = await fetch(urlEnvio, {
+                method,
+                headers: {
+                    "Content-Type": "application/json",
+                },
+                body: JSON.stringify(datos),
+                mode: "cors",
+            });
+            if (respuesta.ok) {
+                listarConsultas();
+                resetModal();
+            }
+            return;
+        }
+    } catch (error) {
+        console.log({ error });
+        // $(alert).show();
+    }
+}
+
+function resetModal() {
+    indice.value = "";
+    btnGuardar.innerHTML = "Crear"
+    mascota.value = "Seleccione Mascota";
+    veterinaria.value = "Seleccione Veterinari@";
+    historia.value = "Historia";
+    diagnostico.value = "Diagnostico";
+}
+
+function validar(datos) {
+    if (typeof datos === 'objet') return false;
+    for (let llave in datos) {
+        if (datos[llave].length === 0) return false;
+    }
+    return;
+}
+btnGuardar.onclick = enviarDatos;
+listarConsultas();
+listarMascotas();
 listarVeterinarias();
