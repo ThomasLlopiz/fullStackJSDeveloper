@@ -7,7 +7,7 @@ const historia = document.getElementById("historia");
 const diagnostico = document.getElementById("diagnostico");
 const alert = document.getElementById("alert");
 const alertWarning = document.getElementById("alertWarning");
-const formulario = document.getElementById("formulario");
+const modal = document.getElementsByClassName('modal');
 const url = "http://localhost:5000";
 let consultas = [];
 let mascotas = [];
@@ -138,7 +138,8 @@ async function enviarDatos(e) {
             return;
         }
         $(alertWarning).show();
-        $("#exampleModale").modal('toggle');
+        //$("#exampleModal").modal("toggle")
+        //$(modal).hide();
     } catch (error) {
         console.log({ error });
         $(alert).show();
@@ -146,13 +147,17 @@ async function enviarDatos(e) {
 }
 
 function resetModal() {
-    indice.value = "";
-    btnGuardar.innerHTML = "Crear"
-    mascota.value = "Seleccione Mascota";
-    veterinaria.value = "Seleccione Veterinari@";
-    historia.value = "";
-    diagnostico.value = "Diagnostico";
-    //$(btnGuardar).modal('toggle');
+    btnGuardar.innerHTML = "Crear";
+    [indice, mascota, veterinaria, historia, diagnostico].forEach(
+        (inputActual) => {
+            inputActual.value = "";
+            inputActual.classList.remove("is-invalid");
+            inputActual.classList.remove("is-valid");
+        }
+    );
+    $(alertWarning).hide();
+    //$("#exampleModal").modal("toggle")
+    //$(modal).hide();
 }
 
 function validar(datos) {
@@ -167,6 +172,7 @@ function validar(datos) {
             document.getElementById(llave).classList.add("is-valid");
         }
     }
+    if (respuesta === true) $(alertWarning).hide();
     return respuesta;
 }
 btnGuardar.onclick = enviarDatos;
