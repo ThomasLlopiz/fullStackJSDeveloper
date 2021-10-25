@@ -6,6 +6,8 @@ const indice = document.getElementById("indice");
 const historia = document.getElementById("historia");
 const diagnostico = document.getElementById("diagnostico");
 const alert = document.getElementById("alert");
+const alertWarning = document.getElementById("alertWarning");
+const formulario = document.getElementById("formulario");
 const url = "http://localhost:5000";
 let consultas = [];
 let mascotas = [];
@@ -32,7 +34,7 @@ async function listarConsultas() {
                 <td>${consulta.fechaEdicion}</td>
                 <td>
                     <div class="btn-group" role="group" aria-label="Basic example">
-                        <button type="button" class="btn btn-info editar" data-bs-toggle="modal" data-bs-target="#exampleModal"><i class="fas fa-edit"></i></button>
+                        <button type="button" class="btn btn-info editar" data-bs-toggle="modal" data-bs-target="#exampleModal" ><i class="fas fa-edit"></i></button>
                     </div>
                 </td>
             </tr>`).join("");
@@ -135,7 +137,8 @@ async function enviarDatos(e) {
             }
             return;
         }
-        $(alert).show();
+        $(alertWarning).show();
+        $("#exampleModale").modal('toggle');
     } catch (error) {
         console.log({ error });
         $(alert).show();
@@ -149,14 +152,22 @@ function resetModal() {
     veterinaria.value = "Seleccione Veterinari@";
     historia.value = "";
     diagnostico.value = "Diagnostico";
+    //$(btnGuardar).modal('toggle');
 }
 
 function validar(datos) {
     if (typeof datos !== "object") return false;
+    let respuesta = true;
     for (let llave in datos) {
-        if (datos[llave].length === 0) return false;
+        if (datos[llave].length === 0) {
+            document.getElementById(llave).classList.add("is-invalid");
+            respuesta = false;
+        } else {
+            document.getElementById(llave).classList.remove("is-invalid");
+            document.getElementById(llave).classList.add("is-valid");
+        }
     }
-    return true;
+    return respuesta;
 }
 btnGuardar.onclick = enviarDatos;
 listarConsultas();
