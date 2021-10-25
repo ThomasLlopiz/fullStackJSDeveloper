@@ -59,7 +59,7 @@
             <div class="alert alert-danger alert-dismissible" role="alert" id="alert">
                 <strong>Oops!</strong> Algo hicimos mal, por favor vuelve a intentarlo!
                 <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
-            </div>
+            </div>           
         </div>
         <!-- Fin button modal -->
 
@@ -93,31 +93,31 @@
                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
                 <div class="modal-body">
-                    <form id="formulario">
+                    <form id="formulario"  class="needs-validation">
                         <input type="hidden" id="indice">
                         <div class="row">
                             <div class="col">
-                                <select class="form-control" id="mascota">
-                                    <option>Seleccione Mascota</option>
+                                <select class="form-control" id="mascota" required>
+                                    <option value="">Seleccione Mascota</option>
                                 </select>
                             </div>
                         </div>
                         <div class="row">
                             <div class="col">
                                 <select class="form-control" id="veterinaria">
-                                    <option>Seleccione Veterinari@</option>
+                                    <option value="">Seleccione Veterinari@</option>
                                 </select>
                             </div>
                         </div>
                         <div class="row">
                             <div class="col">
-                                <textarea class="form-control" placeholder="Historia" id="historia"></textarea>
+                                <textarea class="form-control" placeholder="Historia" id="historia" required></textarea>
                             </div>
                         </div>
                         <div class="row">
                             <div class="col">
                                 <select class="form-control" id="diagnostico">
-                                    <option>Seleccionar diagnostico</option>
+                                    <option value="">Seleccionar diagnostico</option>
                                     <option>Prurito de piel (sarna)</option>
                                     <option>Moquillo</option>
                                     <option>Trauma cefálico</option>
@@ -127,27 +127,23 @@
                         </div>
                     </form>
                 </div>
+                <div class="alert alert-warning alert-dismissible" role="alert" id="alertWarning">
+                    <strong>Oops!</strong> Ten cuidado, te faltan datos por llenar!
+                    <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                </div>
                 <div class="modal-footer">
                     <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cerrar</button>
-                    <button type="button" class="btn btn-primary" data-bs-dismiss="modal" id="btn-guardar" >Crear</button>
+                    <button type="button" class="btn btn-primary" id="btn-guardar" >Crear</button>
                 </div>
             </div>
         </div>
     </div>
     <!-- FIN MODAL -->
-
-    <!-- Optional JavaScript; choose one of the two! -->
-    <!-- Option 1: Bootstrap Bundle with Popper -->
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.0/dist/js/bootstrap.bundle.min.js"
-        integrity="sha384-U1DAWAznBHeqEIlVSCgzq+c9gqGAJn5c/t99JyeKa9xxaYpSvHU5awsuZVVFIhvj" crossorigin="anonymous">
-        </script>
-    <!-- Option 2: Separate Popper and Bootstrap JS  -->
-    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.3/dist/umd/popper.min.js"
-        integrity="sha384-eMNCOe7tC1doHpGoWe/6oMVemdAVTMs2xqW4mwXrXsW0L84Iytr2wi5v2QjrP/xp" crossorigin="anonymous">
-        </script>
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.0/dist/js/bootstrap.min.js"
-        integrity="sha384-cn7l7gDp0eyniUwwAZgrzD06kc/tftFf19TOAs2zVinnD/C7E91j9yyk5//jjpt/" crossorigin="anonymous">
-        </script>
+    <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.1/dist/umd/popper.min.js"></script>
+    <script src="https://code.jquery.com/jquery-3.6.0.slim.js" integrity="sha256-HwWONEZrpuoh951cQD1ov2HUK5zA5DwJ1DNUXaM6FsY=" crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.0/dist/js/bootstrap.bundle.min.js" integrity="sha384-U1DAWAznBHeqEIlVSCgzq+c9gqGAJn5c/t99JyeKa9xxaYpSvHU5awsuZVVFIhvj" crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.3/dist/umd/popper.min.js" integrity="sha384-eMNCOe7tC1doHpGoWe/6oMVemdAVTMs2xqW4mwXrXsW0L84Iytr2wi5v2QjrP/xp" crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.0/dist/js/bootstrap.min.js" integrity="sha384-cn7l7gDp0eyniUwwAZgrzD06kc/tftFf19TOAs2zVinnD/C7E91j9yyk5//jjpt/" crossorigin="anonymous"></script>
     <script defer src="https://use.fontawesome.com/releases/v5.13.0/js/all.js"></script>
     <script defer src="https://use.fontawesome.com/releases/v5.13.0/js/v4-shims.js"></script>
     <script src="https://code.jquery.com/jquery-3.3.1.js"></script>
